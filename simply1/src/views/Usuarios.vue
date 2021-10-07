@@ -42,8 +42,8 @@
                   <v-row>
                     <v-col
                       cols="12"
-                      sm="6"
-                      md="12"
+                      sm="4"
+                      md="8"
                     >
                       <v-text-field
                         v-model="usuarioEditado.nombre"
@@ -55,7 +55,7 @@
                     </v-col>
                     <v-col
                       cols="12"
-                      sm="6"
+                      sm="4"
                       md="8"
                     >
                       <v-text-field
@@ -67,24 +67,26 @@
                     </v-col>
                     <v-col
                       cols="12"
-                      sm="6"
+                      sm="4"
                       md="8"
                     >
                       <v-text-field
-                        v-model="usuarioEditado.password"
+                        v-model="usuarioEditado.password"                        
                         label="Contraseña"
+                        counter=""
+                        type=password
                         required
                       ></v-text-field>
                     </v-col>
                     <v-col
                       cols="12"
-                      sm="6"
+                      sm="4"
                       md="8"
-                    >Habilitado
-                      <v-simple-checkbox
+                    >
+                      <v-checkbox
                         v-model="usuarioEditado.habilitado"
-                             
-                      ></v-simple-checkbox>
+                         label="Habilitado"
+                      ></v-checkbox>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -109,9 +111,9 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogEstado" max-width="500px">
             <v-card>
-              <v-card-title class="text-h5">Esta seguro que quiere deshabilitar este usuario?</v-card-title>
+              <v-card-title class="text-h5">{{ tituloMensaje }}</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeEnable">Cancelar</v-btn>
@@ -123,10 +125,10 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.habilitado`]="{ item }">
-        <v-simple-checkbox
+        <v-checkbox
           v-model="item.habilitado"
-          disabled
-        ></v-simple-checkbox>
+          @click="habilitarUsuario(item)"
+        ></v-checkbox>
       </template>
 
       <template v-slot:[`item.acciones`]="{ item }">
@@ -136,12 +138,6 @@
           @click="editarUsuario(item)"
         >
           mdi-pencil
-        </v-icon>
-        <v-icon
-          small
-          @click="habilitarUsuario(item)"
-        >
-          mdi-delete
         </v-icon>
       </template>
       <template v-slot:no-data>
@@ -157,14 +153,16 @@
 </template>
 
 <script>
+
+  var bcrypt = require('bcryptjs');
+
   export default {
     data: () => ({
       valid: false,
       dialog: false,
-      dialogDelete: false,
+      dialogEstado: false,
       tituloTabla: "Usuarios",
       tituloNuevoUsuario: "Nuevo Usuario",
-      chkHabilitado: true,
       headers: [
         {
           text: "Nombre",
@@ -174,11 +172,11 @@
         },
         { text: "E-mail", value: "correo" },
         { text: "Habilitado", value: "habilitado" },
-        { text: 'Acciones', value: 'acciones', sortable: false },
+        { text: 'Acción', value: 'acciones', sortable: false },
       ],
       nombre: "",
       nameRules: [
-        (v) => !!v || "Nombre es obligatorio",
+        (v) => !! v || "Nombre es obligatorio",
         // (v) => v.length <= 50 || "El nombre debe ser menor a 50 caracteres",
       ],
       email: "",
@@ -189,18 +187,19 @@
       usuarios: [],
       editedIndex: -1,
       usuarioEditado: {
-        id: '',
+        _id: '',
         nombre: '',
         correo: '',
         password: '',
-        habilitado: true,
+        passwordGuardado: '',
+        habilitado: false,
       },
       defaultUsuario: {
-        id: '',
+        _id: '',
         nombre: '',
         correo: '',
         password: '',
-        habilitado: true,
+        habilitado: false,
       },
     }),
 
@@ -208,13 +207,17 @@
       tituloForma () {
         return this.editedIndex === -1 ? 'Nuevo usuario' : 'Editar usuario'
       },
+      tituloMensaje() {
+        let mensaje = this.usuarioEditado.habilitado ? 'habilitar' :  'deshabilitar'
+        return "Esta seguro que quiere "+ mensaje +" a este usuario?"
+      }
     },
 
     watch: {
       dialog (val) {
         val || this.close()
       },
-      dialogDelete (val) {
+      dialogEstado (val) {
         val || this.closeEnable()
       },
     },
@@ -237,17 +240,19 @@
       editarUsuario (item) {
         this.editedIndex = this.usuarios.indexOf(item)        
         this.usuarioEditado = Object.assign({}, item)
+        this.usuarioEditado.passwordGuardado = this.usuarioEditado.password;
+        this.usuarioEditado.password = '';
         this.dialog = true
       },
 
       habilitarUsuario (item) {
         this.editedIndex = this.usuarios.indexOf(item)
         this.usuarioEditado = Object.assign({}, item)
-        this.dialogDelete = true
+        this.dialogEstado = true
       },
 
       enableUsuarioConfirm () {
-        this.usuarios.splice(this.editedIndex, 1)
+        this.update()
         this.closeEnable()
       },
 
@@ -260,29 +265,34 @@
       },
 
       closeEnable () {
-        this.dialogDelete = false
+        this.dialogEstado = false
         this.$nextTick(() => {
           this.usuarioEditado = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
       },
     
-      save () {
-        //Es la actualizacion del registro
-        if (this.editedIndex > -1) {
+      update() {
+          this.usuarioEditado.password = this.usuarioEditado.passwordGuardado;
+          this.usuarioEditado.passwordGuardado = '';
           this.axios.put(`usuario/update/${this.usuarios[this.editedIndex]._id}`,this.usuarioEditado)
             .then((res) => {
-              this.usuarios[this.editedIndex]._id = res.data.id;
-              this.usuarios[this.editedIndex].nombre = res.data.nombre;
-              this.usuarios[this.editedIndex].correo = res.data.correo;
-              this.usuarios[this.editedIndex].password = res.data.password;
-              this.usuarios[this.editedIndex].habilitado = res.data.habilitado;
-              // Object.assign(this.usuarios[this.editedIndex], this.usuarioEditado)
+              // this.usuarios[this.editedIndex]._id = res.data._id;
+              this.usuarioEditado.nombre = res.data.nombre;
+              this.usuarioEditado.correo = res.data.correo;
+              this.usuarioEditado.password = res.data.password;
+              this.usuarioEditado.habilitado = res.data.habilitado;
             })
             .catch((e)=>{
               console.log('error ' + e)
             })  
           Object.assign(this.usuarios[this.editedIndex], this.usuarioEditado)
+      },
+
+      save () {
+        //Es la actualizacion del registro
+        if (this.editedIndex > -1) {
+          this.update()
         } else {
         //Es un nuevo registro
           this.axios.post('usuario/add',this.usuarioEditado)

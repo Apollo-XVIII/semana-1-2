@@ -27,7 +27,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Recetas.vue')
   },
   {
-    path: '/receta',
+    path: '/receta/:id',
     name: 'Receta',
 
     component: () => import(/* webpackChunkName: "about" */ '../views/Receta.vue')
@@ -39,7 +39,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Preparaciones.vue')
   },
   {
-    path: '/preparacion',
+    path: '/preparacion/:id',
     name: 'Preparacion',
 
     component: () => import(/* webpackChunkName: "about" */ '../views/Preparacion.vue')

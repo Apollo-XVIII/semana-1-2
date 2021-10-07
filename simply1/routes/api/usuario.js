@@ -12,10 +12,7 @@ router.put('/update/:id', usuarioController.update);
 router.put('/activate', usuarioController.activate);
 router.put('/deactivate', usuarioController.deactivate);
 
-module.exports = router;
-
 //Publico
 router.post('/login', usuarioController.login);
-
 
 module.exports = router;
