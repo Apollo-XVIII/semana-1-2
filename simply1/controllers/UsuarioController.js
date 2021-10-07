@@ -45,33 +45,33 @@ module.exports = {
     list: async(req, res, next) => {
         try {
             let valor = req.query.valor;
-            const reg = await models.Usuario.findAll();
+            const reg = await models.Usuario.find();
             res.status(200).json(reg);
         } catch (e) {
             res.status(500).send({
-                message: 'Ocurrió un error'
+                message: 'Ocurrió un error ' + e
             });
             next(e);
         }
     },
-    update: async(req, res, next) => {
+    update: async(req, res, next) => {            
+        const id = req.params.id;
+        const body = req.body;
+
         try {
-            let pas = req.body.password;
-            const reg0 = await models.Usuario.findOne({ where: { id: req.body.id } });
-            if (pas != reg0.password) {
-                req.body.password = await bcrypt.hash(req.body.password, 10);
-            }
-            const reg = await models.Usuario.update(req.body, { where: { id: req.body.id } });
-            console.log(req)
+
+            const reg = await models.Usuario.findByIdAndUpdate(id,
+                body,
+                {new:true});
             res.status(200).json(reg);
         } catch (e) {
             res.status(500).send({
-                message: 'Ocurrió un error'
+                message: 'Ocurrió un error' + e
             });
             next(e);
         }
     },
-    enable: async(req, res, next) => {
+    activate: async(req, res, next) => {
         try {
             const reg = await models.Usuario.update({ habilitado: 1 }, { where: { id: req.body.id } });
             res.status(200).json(reg);
@@ -82,7 +82,7 @@ module.exports = {
             next(e);
         }
     },
-    disable: async(req, res, next) => {
+    deactivate: async(req, res, next) => {
         try {
             const reg = await models.Usuario.update({ habilitado: 0 }, { where: { id: req.body.id } });
             res.status(200).json(reg);

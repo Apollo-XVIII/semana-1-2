@@ -25,6 +25,7 @@
             <v-tab @click="llamarNosotros()">Nosotros</v-tab>
             <v-tab @click="llamarHistoria()">Historia del Café</v-tab>
             <v-tab @click="llamarLogin()">Login</v-tab>
+            <v-tab @click="llamarUsuarios()">Usuarios</v-tab>
           </v-tabs>
           <!-- <a
             v-for="(next, i) in whatsNext"
@@ -54,26 +55,30 @@ export default {
         .catch(() => {});
  
     },
+
     llamarTipos() {
       this.$router
         .push({ path: "/tipos" })
         .catch(() => {});
     },
+
     llamarRecetas() {
       this.$router
         .push({ path: "/recetas" })
         .catch(() => {});
     },
+
     llamarPreparaciones() {
       this.$router
         .push({ path: "/preparaciones" })
         .catch(() => {});
     },
+    
     llamarNoticias() {
       this.$router
         .push({ path: "/noticias" })
         .catch(() => {});
-     },
+    },
 
     llamarNosotros() {
       this.$router
@@ -85,14 +90,21 @@ export default {
       this.$router
         .push({ path: "/historia" })
         .catch(() => {});
-     },
+    },
 
     llamarLogin() {
       this.$router
         .push({ path: "/login" })
         .catch(() => {});
-     },
+    },
+
+    llamarUsuarios() {
+      this.$router
+        .push({ path: "/usuarios" })
+        .catch(() => {});
+    },
   },
+
 };
 </script>
 

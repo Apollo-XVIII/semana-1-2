@@ -10,6 +10,8 @@ import Tipos from '../views/Tipos.vue'
 import Mundo from '../views/Mundo.vue'
 import Variedad from '../views/Variedad.vue'
 import Colombia from '../views/Colombia.vue'
+import Usuarios from '../views/Usuarios.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -94,9 +96,15 @@ const routes = [
     name: 'Colombia',
     
     component: () => import(/* webpackChunkName: "about" */ '../views/Colombia.vue')
+  },
+  {
+    path: '/usuarios',
+    name: 'Usuarios',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/Usuarios.vue')
   }
-  
-  
+  ,
+
 
 ]
 
