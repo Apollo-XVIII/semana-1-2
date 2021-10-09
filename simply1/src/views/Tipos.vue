@@ -1,34 +1,52 @@
 <template>
-  <v-card>
-    <v-tabs
-      color="deep-purple accent-4"
-      right
-    >
-      <v-tab>Tipo 1</v-tab>
-      <v-tab>Tipo 2</v-tab>
-      <v-tab>Tipo 3</v-tab>
+<v-container>
+    <v-layout wrap>
 
-      <v-tab-item
-        v-for="n in 3"
-        :key="n"
-      >
-        <v-container fluid>
-          <v-row>
-            <v-col
-              v-for="i in 6"
-              :key="i"
-              cols="12"
-              md="4"
-            >
-              <v-img
-                :src="`https://picsum.photos/500/300?image=${i * n * 5 + 10}`"
-                :lazy-src="`https://picsum.photos/10/6?image=${i * n * 5 + 10}`"
-                aspect-ratio="1"
-              ></v-img>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-tab-item>
-    </v-tabs>
-  </v-card>
+        <v-flex class="brown text-center white--text" xs12>
+            <h1>TIPOS DE CAFÉ</h1>
+        </v-flex>
+
+        <v-layout class="mt-1 mb-1 brown lighten-4" justify-center>
+            <v-flex class="brown white--text text-center" xs3>
+                <h2>Denominación de Origen</h2>                
+                <a href="/do">                
+                <v-btn elevation="4" rounded @click="IrVariedad">
+                Ver información
+                </v-btn>
+                <br>
+                <v-avatar width="155" height="200">            
+                <img src="../img/sello_DO.png" alt="DO">
+                </v-avatar>
+                </a>
+            </v-flex>
+
+            <v-flex class="brown lighten-2 black--text text-center" xs3>
+                <h2>Marca Certificación</h2>
+                <a href="/certificacion">
+                <v-btn elevation="4" rounded @click="IrVariedad">
+                Ver información
+                </v-btn>
+                <br>
+                <v-avatar width="200" height="200">  
+                <img src="../img/cafe_certificacion.jpg" alt="certificacion" width="200">
+                </v-avatar>
+                </a>
+            </v-flex>
+
+            <v-flex class="brown white--text text-center" xs3>
+                <h2>Diferenciación en Taza</h2>
+                <a href="/taza">
+                <v-btn elevation="4" rounded @click="IrColombia">
+                Ver información
+                </v-btn>
+                <br>
+                <v-avatar width="200" height="200">             
+                <img src="../img/cafe_dif_taza.jpg" alt="taza" width="150">
+                </v-avatar>
+                </a>
+            </v-flex>
+        </v-layout>
+
+    </v-layout>
+</v-container>
 </template>
