@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Conexión BD
 const mongoose = require('mongoose');
-const url = 'mongodb+srv://usrSimplycoffee:Utp2021mintic@simplycoffee.g2von.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const url = 'mongodb+srv://usrmongo_alexa:moniKita_1971@cluster0.dptfc.mongodb.net/cluster0?retryWrites=true&w=majority';
 
 //const options = {useNewUrlParser: true, useUnifiedTopolgy: true};
 

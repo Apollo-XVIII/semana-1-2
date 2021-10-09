@@ -17,7 +17,7 @@ const usuarioSchema = new Schema({
         length: 50,
         required: [true, 'Contraseña obligatoria']
     },
-    habilitado: {
+    activo: {
         type: Boolean,
         default: true
     },

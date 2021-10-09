@@ -21,10 +21,28 @@ const recetaSchema = new Schema({
         required: [true, 'Ingredientes obligatorios']
     },
 
-    preparacion: {
+    Preparacion: {
         type: String,
         length: 50,
         required: [true, 'Pasos obligatorios']
+    },
+
+    URL: {
+        type: String,
+        length: 50,
+        required: [true, 'Pasos obligatorios']
+    },
+
+    imagen_id: {
+        type: Number,
+    },
+
+    activo: {
+        type: Boolean,
+    },
+
+    receta_id: {
+        type: Number,
     },
 
     dateAt: {
