@@ -84,8 +84,8 @@
                       md="8"
                     >
                       <v-checkbox
-                        v-model="usuarioEditado.habilitado"
-                         label="Habilitado"
+                        v-model="usuarioEditado.activo"
+                         label="Acitivo"
                       ></v-checkbox>
                     </v-col>
                   </v-row>
@@ -124,9 +124,9 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.habilitado`]="{ item }">
+      <template v-slot:[`item.activo`]="{ item }">
         <v-checkbox
-          v-model="item.habilitado"
+          v-model="item.activo"
           @click="habilitarUsuario(item)"
         ></v-checkbox>
       </template>
@@ -171,7 +171,7 @@
           value: "nombre",
         },
         { text: "E-mail", value: "correo" },
-        { text: "Habilitado", value: "habilitado" },
+        { text: "Activo", value: "activo" },
         { text: 'Acción', value: 'acciones', sortable: false },
       ],
       nombre: "",
@@ -192,14 +192,14 @@
         correo: '',
         password: '',
         passwordGuardado: '',
-        habilitado: false,
+        activo: false,
       },
       defaultUsuario: {
         _id: '',
         nombre: '',
         correo: '',
         password: '',
-        habilitado: false,
+        activo: false,
       },
     }),
 
@@ -208,7 +208,7 @@
         return this.editedIndex === -1 ? 'Nuevo usuario' : 'Editar usuario'
       },
       tituloMensaje() {
-        let mensaje = this.usuarioEditado.habilitado ? 'habilitar' :  'deshabilitar'
+        let mensaje = this.usuarioEditado.activo ? 'activar' :  'desactivar'
         return "Esta seguro que quiere "+ mensaje +" a este usuario?"
       }
     },
@@ -281,7 +281,7 @@
               this.usuarioEditado.nombre = res.data.nombre;
               this.usuarioEditado.correo = res.data.correo;
               this.usuarioEditado.password = res.data.password;
-              this.usuarioEditado.habilitado = res.data.habilitado;
+              this.usuarioEditado.activo = res.data.activo;
             })
             .catch((e)=>{
               console.log('error ' + e)
