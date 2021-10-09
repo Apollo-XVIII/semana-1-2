@@ -5,11 +5,6 @@ import Recetas from '../views/Recetas.vue'
 import Receta from '../views/Receta.vue'
 import Preparaciones from '../views/Preparaciones.vue'
 import Preparacion from '../views/Preparacion.vue'
-import Historia from '../views/Historia.vue'
-import Tipos from '../views/Tipos.vue'
-import Mundo from '../views/Mundo.vue'
-import Variedad from '../views/Variedad.vue'
-import Colombia from '../views/Colombia.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -96,7 +91,41 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Colombia.vue')
   }
   
+
+  ,
+  {
+    path: '/do',
+    name: 'DO',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/DO.vue')
+  }
   
+  ,
+  {
+    path: '/certificacion',
+    name: 'Certificacion',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/Certificacion.vue')
+  }
+
+
+  ,
+  {
+    path: '/taza',
+    name: 'Taza',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/Taza.vue')
+  }
+
+  ,
+  {
+    path: '/detdo',
+    name: 'Detalledo',
+    
+    component: () => import(/* webpackChunkName: "about" */ '../views/Detalledo.vue')
+  }
+
+
 
 ]
 
