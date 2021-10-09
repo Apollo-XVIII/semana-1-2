@@ -46,7 +46,7 @@ export default {
   },
 
   methods: {
-    verReceta(item) {
+    verPreparacion(item) {
       this.$router.push({ 
         name: 'Preparacion', 
         params: { id: item._id }

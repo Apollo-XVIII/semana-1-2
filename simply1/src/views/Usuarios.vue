@@ -85,7 +85,7 @@
                     >
                       <v-checkbox
                         v-model="usuarioEditado.activo"
-                         label="Acitivo"
+                         label="Activo"
                       ></v-checkbox>
                     </v-col>
                   </v-row>
