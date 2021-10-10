@@ -4,30 +4,27 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "dev": "nodemon index.js",
-    "devbabel": "nodemon index.js --exec babel-node"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^0.22.0",
     "bcryptjs": "^2.4.3",
     "connect-history-api-fallback": "^1.6.0",
+=======
+>>>>>>> 67d5c2c0b81e08fde4dd97ab29587ad3663dd384
     "core-js": "^3.6.5",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "mongoose": "^6.0.9",
-    "morgan": "^1.10.0",
     "vue": "^2.6.11",
+<<<<<<< HEAD
     "vue-axios": "^3.3.7",
+=======
+    "vue-pdf": "^4.3.0",
+>>>>>>> 67d5c2c0b81e08fde4dd97ab29587ad3663dd384
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.5",
-    "@babel/node": "^7.15.4",
-    "@babel/preset-env": "^7.15.6",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
@@ -37,10 +34,5 @@
     "vue-cli-plugin-vuetify": "~2.4.2",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
-  },
-  "description": "```\r npm install\r ```",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }
