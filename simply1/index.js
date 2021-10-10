@@ -14,8 +14,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Conexión BD
 const mongoose = require('mongoose');
-
+const url = ''
 //const options = {useNewUrlParser: true, useUnifiedTopolgy: true};
+
 
 mongoose.connect(url).then(
     () => {console.log('Conexión exitosa a la base de datos!!')},

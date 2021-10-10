@@ -116,7 +116,7 @@
               <v-card-title class="text-h5">{{ tituloMensaje }}</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeEnable">Cancelar</v-btn>
+                <v-btn color="blue darken-1" text @click="closeEnable(false,[`item.activo`])">Cancelar</v-btn>
                 <v-btn color="blue darken-1" text @click="enableUsuarioConfirm">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -218,7 +218,7 @@
         val || this.close()
       },
       dialogEstado (val) {
-        val || this.closeEnable()
+        val || this.closeEnable(false, false)
       },
     },
 
@@ -253,7 +253,7 @@
 
       enableUsuarioConfirm () {
         this.update()
-        this.closeEnable()
+        this.closeEnable(true,true)
       },
 
       close () {
@@ -264,7 +264,10 @@
         })
       },
 
-      closeEnable () {
+      closeEnable (isUpdate, value) {
+        if(!isUpdate) {
+          this.usuarios[this.editedIndex] = value
+        }
         this.dialogEstado = false
         this.$nextTick(() => {
           this.usuarioEditado = Object.assign({}, this.defaultItem)
