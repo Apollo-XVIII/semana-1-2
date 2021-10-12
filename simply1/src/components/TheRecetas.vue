@@ -8,7 +8,7 @@
       ></v-progress-linear>
     </template>
 
-    <v-img contain :src="receta.imagen" height="250"></v-img>
+    <v-img contain :src="`../img/${receta.imagen}`" height="250"></v-img>
 
     <v-card-title class="text-h6 brown--text darken-2--text">
       {{ receta.nombre }}</v-card-title

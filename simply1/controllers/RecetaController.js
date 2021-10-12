@@ -16,7 +16,6 @@ module.exports = {
     },
     list: async(req, res, next) => {
         try {
-            let valor = req.query.valor;
             const reg = await models.Receta.find();
             res.status(200).json(reg);
         } catch (e) {

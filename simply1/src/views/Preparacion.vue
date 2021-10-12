@@ -5,7 +5,7 @@
         <v-col cols="6" md="4">
           <v-card class="pa-2" outlined tile>
             <span class="text-h5 font-weight-bold brown--text darken-2--text">
-              {{ nombre }}</span
+              {{ preparacion.nombre }}</span
             >
           </v-card>
         </v-col>
@@ -19,7 +19,7 @@
             <p></p>
             <p>
               <span class="text brown--text ligthen-2--text">
-                {{ ingredientes }}</span>
+                {{ preparacion.ingredientes }}</span>
             </p>
           </v-card>
         </v-col>
@@ -35,7 +35,7 @@
             <p></p>
             <p>
               <span class="text brown--text ligthen-2--text">
-                {{ preparacion }}</span>
+                {{ preparacion.preparacion }}</span>
             </p>
           </v-card>
         </v-col>
@@ -55,10 +55,8 @@ export default {
       titulo_ingredientes: "Ingredientes: ",
       titulo_preparacion: "Preparación: ",
       id: this.$route.params.id,
-      nombre: '',
-      ingredientes: '',
+      preparacion: {},
       imagen: '',
-      preparacion: '',
     }
   },
 
@@ -70,10 +68,8 @@ export default {
     initialize () {
       this.axios.get(`preparacion/listOne/${this.id}`)
         .then((response) => {
-          this.nombre = response.data.nombre;
-          this.ingredientes = response.data.ingredientes;
-          this.imagen = response.data.imagen;
-          this.preparacion = response.data.preparacion;
+          this.preparacion = response.data;
+          this.imagen = '../img/' + this.preparacion.imagen;
         })
         .catch((e)=>{
           console.log('error ' + e)
