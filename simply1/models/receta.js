@@ -12,7 +12,7 @@ const recetaSchema = new Schema({
     descripcion: {
         type: String,
         length: 50,
-        required: [true, 'Descrpción obligatoria']
+        required: [true, 'Descripción obligatoria']
     },
 
     ingredientes: {
@@ -21,28 +21,19 @@ const recetaSchema = new Schema({
         required: [true, 'Ingredientes obligatorios']
     },
 
-    Preparacion: {
+    preparacion: {
         type: String,
         length: 50,
-        required: [true, 'Pasos obligatorios']
+        required: [true, 'Preparación obligatoria']
     },
 
     URL: {
         type: String,
         length: 50,
-        required: [true, 'Pasos obligatorios']
     },
 
-    imagen_id: {
-        type: Number,
-    },
-
-    activo: {
-        type: Boolean,
-    },
-
-    receta_id: {
-        type: Number,
+    imagen: {
+        type: String,
     },
 
     dateAt: {
