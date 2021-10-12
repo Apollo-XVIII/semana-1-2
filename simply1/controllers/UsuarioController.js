@@ -65,7 +65,7 @@ module.exports = {
     update: async(req, res, next) => { 
         
         try {
-            let valor = req.query.valor;
+            let valor = req.query.correo;
             let id = req.body._id;
             let checkCorreo = await models.Usuario.findOne( { correo: valor } )
             if(!checkCorreo) {

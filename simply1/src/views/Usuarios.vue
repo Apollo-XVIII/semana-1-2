@@ -289,8 +289,8 @@
       closeEnable () {
           this.dialogActivo = false
           this.$nextTick(() => {
-          this.usuarioEditado = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
+            this.usuarioEditado = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
         })
       },
 
