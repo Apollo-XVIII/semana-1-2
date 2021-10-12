@@ -2,18 +2,24 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const usuarioSchema = new Schema({
+    
     nombre: {
         type: String,
-        length: 50,
+        length: 100,
         required: [true, 'Nombre obligatorio']
     }, 
     correo: {
         type: String,
         required: [true, 'E-mail obligatorio']
     },
-    habilitado: {
-        type: Number,
-        default: 1
+    password: {
+        type: String,
+        length: 10,
+        required: [true, 'Contraseña obligatoria']
+    },
+    activo: {
+        type: Boolean,
+        default: true
     },
     dateAt: {
         type: Date,

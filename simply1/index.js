@@ -14,8 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Conexión BD
 const mongoose = require('mongoose');
-const url = 'mongodb+srv://usrSimplycoffee:Utp2021mintic@simplycoffee.g2von.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-//const options = {useNewUrlParser: true, useUnifiedTopolgy: true};
+const url = 'mongodb+srv://ApolloXVIII:cafe2021@cluster0.gtgzl.mongodb.net/SimplyCoffee?retryWrites=true&w=majority'
 
 mongoose.connect(url).then(
     () => {console.log('Conexión exitosa a la base de datos!!')},

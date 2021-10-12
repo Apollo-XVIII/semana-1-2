@@ -1,63 +1,84 @@
 <template>
-  <div>
-    <v-row>
-      <v-col cols="6" md="4">
-        <v-card class="pa-2" outlined tile>
-          <span class="text-h5 font-weight-bold brown--text darken-2--text">
-            {{ preparacion[0].nombre }}</span
-          >
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row>
+  <v-container>
+    <div class="pa-4">
+      <v-row>
+        <v-col cols="6" md="4">
+          <v-card class="pa-2" outlined tile>
+            <span class="text-h5 font-weight-bold brown--text darken-2--text">
+              {{ nombre }}</span
+            >
+          </v-card>
+        </v-col>
+      </v-row>
 
-      <v-col cols="6" md="4">
-        <v-card color="brown lighten-5" class="pa-2" outlined tile>
-          <span class="text-h7 font-weight-bold brown--text darken-2--text">
-            {{ titulo_ingredientes }}</span>
-          <p></p>
-          <p>
-            <span class="text brown--text ligthen-2--text">
-              {{ preparacion[0].ingredientes }}</span>
-          </p>
-        </v-card>
-      </v-col>
-      <v-col cols="6" md="4">
-        <v-card class="pa-2" outlined tile>
-          <v-img contain :src="preparacion[0].imagen" height="250"></v-img>
-        </v-card>
-      </v-col>
-      <v-col cols="6" md="4">
-        <v-card color="brown lighten-5" class="pa-2" outlined tile>
-          <span class="text-h7 font-weight-bold brown--text darken-2--text">
-            {{ titulo_preparacion }}</span>
-          <p></p>
-          <p>
-            <span class="text brown--text ligthen-2--text">
-              {{ preparacion[0].preparacion }}</span>
-          </p>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+      <v-row>
+        <v-col cols="6" md="4">
+          <v-card color="brown lighten-5" class="pa-2" outlined tile>
+            <span class="text-h7 font-weight-bold brown--text darken-2--text">
+              {{ titulo_ingredientes }}</span>
+            <p></p>
+            <p>
+              <span class="text brown--text ligthen-2--text">
+                {{ ingredientes }}</span>
+            </p>
+          </v-card>
+        </v-col>
+        <v-col cols="6" md="4">
+          <v-card class="pa-2" outlined tile>
+            <v-img contain :src="imagen" height="250"></v-img>
+          </v-card>
+        </v-col>
+        <v-col cols="6" md="4">
+          <v-card color="brown lighten-5" class="pa-2" outlined tile>
+            <span class="text-h7 font-weight-bold brown--text darken-2--text">
+              {{ titulo_preparacion }}</span>
+            <p></p>
+            <p>
+              <span class="text brown--text ligthen-2--text">
+                {{ preparacion }}</span>
+            </p>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+  </v-container>
 </template>
 
 <script>
+
 export default {
-  data: () => ({
-    loading: false,
-    titulo_ingredientes: "Ingredientes: ",
-    titulo_preparacion: "Preparación: ",
-    preparacion: [
-      {
-        id: "1",
-        nombre: "Aquí va el nombre de la preparación",
-        ingredientes: "Lista de los ingredientes",
-        preparacion: "Pasos de la preparación",
-        url: "URL de referencia",
-        imagen: "https://placeimg.com/640/480/any",
-      },
-    ],
-  }),
+  
+  name: "Preparacion",
+
+  data() {
+    return {
+      titulo_ingredientes: "Ingredientes: ",
+      titulo_preparacion: "Preparación: ",
+      id: this.$route.params.id,
+      nombre: '',
+      ingredientes: '',
+      imagen: '',
+      preparacion: '',
+    }
+  },
+
+  created () {
+    this.initialize()
+  },
+
+  methods: {
+    initialize () {
+      this.axios.get(`preparacion/listOne/${this.id}`)
+        .then((response) => {
+          this.nombre = response.data.nombre;
+          this.ingredientes = response.data.ingredientes;
+          this.imagen = response.data.imagen;
+          this.preparacion = response.data.preparacion;
+        })
+        .catch((e)=>{
+          console.log('error ' + e)
+        })
+    },
+  }
 };
 </script>

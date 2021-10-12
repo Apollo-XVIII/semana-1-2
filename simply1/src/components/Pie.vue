@@ -7,7 +7,7 @@
             <br>
             <br>
 
-            <h3 class="  font-weight-medium d-flex justify-end">
+            <h3 class="font-weight-medium d-flex justify-end">
                 <v-container>
 
                     CONTACTO : <br>
