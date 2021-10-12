@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Conexión BD
 const mongoose = require('mongoose');
-const url = 'mongodb+srv://usrmongo_alexa:moniKita_1971@cluster0.dptfc.mongodb.net/cluster0?retryWrites=true&w=majority'
+const url = 'mongodb+srv://ApolloXVIII:cafe2021@cluster0.gtgzl.mongodb.net/SimplyCoffee?retryWrites=true&w=majority'
 
 mongoose.connect(url).then(
     () => {console.log('Conexión exitosa a la base de datos!!')},
