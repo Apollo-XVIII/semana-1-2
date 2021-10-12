@@ -5,6 +5,8 @@
       :items="usuarios"
       sort-by="nombre"
       class="elevation-1"
+      :loading="cargando"
+      loading-text="Cargando...espere por favor"
     >
       <template v-slot:top>
         <v-toolbar
@@ -48,7 +50,7 @@
                       <v-text-field
                         v-model="usuarioEditado.nombre"
                         label="Nombre"
-                        :counter="50"
+                        :counter="100"
                         :rules="nameRules"
                         required
                       ></v-text-field>
@@ -69,11 +71,12 @@
                       cols="12"
                       sm="4"
                       md="8"
+                      v-if="editedIndex > -1 ? false :  true"
                     >
                       <v-text-field
                         v-model="usuarioEditado.password"                        
                         label="Contraseña"
-                        counter=""
+                        counter="10"
                         type=password
                         required
                       ></v-text-field>
@@ -94,52 +97,45 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="close"
-                >
-                  Cancelar
-                </v-btn>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="save"
-                >
-                  Enviar
-                </v-btn>
+                <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Enviar</v-btn>
+                <v-spacer></v-spacer>
               </v-card-actions>
+
+              <v-spacer></v-spacer>
+                <v-alert :value="mostrarMensaje" dense outlined type="error" dismissible @click="noMensaje">
+                  Los datos no son válidos
+                </v-alert>
+
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogEstado" max-width="500px">
+          <v-dialog v-model="dialogActivo" max-width="500px">
             <v-card>
-              <v-card-title class="text-h5">{{ tituloMensaje }}</v-card-title>
+
+      <template v-slot:[`item.activo`]="{ item }">
+        <v-checkbox v-model="item.activo" input-value="item.activo"></v-checkbox>
+      </template>
+      
+              <v-card-title class="text-subtitle-1">{{ tituloMensaje }}</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeEnable(false,[`item.activo`])">Cancelar</v-btn>
-                <v-btn color="blue darken-1" text @click="enableUsuarioConfirm">OK</v-btn>
-                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeEnable">Cancelar</v-btn>
+                <v-btn color="blue darken-1" text @click="habilitarUsuario()">OK
+                </v-btn>
+
               </v-card-actions>
             </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:[`item.activo`]="{ item }">
-        <v-checkbox
-          v-model="item.activo"
-          @click="habilitarUsuario(item)"
-        ></v-checkbox>
-      </template>
+
 
       <template v-slot:[`item.acciones`]="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="editarUsuario(item)"
-        >
-          mdi-pencil
-        </v-icon>
+        <v-icon small class="mr-2"  @click="editarUsuario(item)" >mdi-pencil</v-icon>
       </template>
+
+
+
       <template v-slot:no-data>
         <v-btn
           color="primary"
@@ -148,19 +144,19 @@
           Reset
         </v-btn>
       </template>
+
     </v-data-table>
   </v-container>
 </template>
 
 <script>
 
-  var bcrypt = require('bcryptjs');
-
   export default {
+    name: "Usuarios",
     data: () => ({
-      valid: false,
       dialog: false,
-      dialogEstado: false,
+      dialogActivo: false,
+      cargando: true,
       tituloTabla: "Usuarios",
       tituloNuevoUsuario: "Nuevo Usuario",
       headers: [
@@ -176,8 +172,8 @@
       ],
       nombre: "",
       nameRules: [
-        (v) => !! v || "Nombre es obligatorio",
-        // (v) => v.length <= 50 || "El nombre debe ser menor a 50 caracteres",
+        v => !! v || "Nombre es obligatorio",
+        // v => v.length <= 100 || "El nombre debe ser menor a 100 caracteres",
       ],
       email: "",
       emailRules: [
@@ -191,7 +187,6 @@
         nombre: '',
         correo: '',
         password: '',
-        passwordGuardado: '',
         activo: false,
       },
       defaultUsuario: {
@@ -201,6 +196,8 @@
         password: '',
         activo: false,
       },
+      mostrarMensaje: false,
+      type: null,
     }),
 
     computed: {
@@ -209,16 +206,18 @@
       },
       tituloMensaje() {
         let mensaje = this.usuarioEditado.activo ? 'activar' :  'desactivar'
-        return "Esta seguro que quiere "+ mensaje +" a este usuario?"
-      }
+        return "¿Está seguro que quiere "+ mensaje +" a este usuario?"
+      },
+      
     },
 
     watch: {
-      dialog (val) {
-        val || this.close()
+      dialog(val) {
+        val || this.close();
       },
-      dialogEstado (val) {
-        val || this.closeEnable(false, false)
+
+      dialogActivo(val) {
+        val || this.habilitarUsuario();
       },
     },
 
@@ -227,86 +226,124 @@
     },
 
     methods: {
+
+      noMensaje() {
+        this.mostrarMensaje = false;
+      },
+
       initialize () {
         this.axios.get('usuario/list')
           .then((response) => {
             this.usuarios = response.data;
+            this.cargando = false;
           })
           .catch((e)=>{
             console.log('error ' + e)
+            return e;
           })
       },
 
       editarUsuario (item) {
-        this.editedIndex = this.usuarios.indexOf(item)        
-        this.usuarioEditado = Object.assign({}, item)
-        this.usuarioEditado.passwordGuardado = this.usuarioEditado.password;
-        this.usuarioEditado.password = '';
+        this.editedIndex = this.usuarios.indexOf(item);   
+        this.usuarioEditado = Object.assign({}, item);
         this.dialog = true
       },
 
       habilitarUsuario (item) {
-        this.editedIndex = this.usuarios.indexOf(item)
-        this.usuarioEditado = Object.assign({}, item)
-        this.dialogEstado = true
-      },
+        console.log('estado')
+        if(this.usuarioEditado.activo) {
+          this.axios.put('usuario/activate/', {
+            _id: this.usuarioEditado.id
+          })
+          .then((res) => {
+            this.usuarioEditado.activo = res.data.activo;
+          })
+          .catch((e)=>{
+            console.log('error ' + e)
+          })
+        } else {
+          this.axios.put('usuario/deactivate/', {
+            _id: this.usuarioEditado.id
+          })
+          .then((res) => {
+            this.usuarioEditado.activo = res.data.activo;
+          })
+          .catch((e)=>{
+            console.log('error ' + e);
+          })
+        }
 
-      enableUsuarioConfirm () {
-        this.update()
-        this.closeEnable(true,true)
+        this.editedIndex = this.usuarios.indexOf(item);
+        this.usuarioEditado = Object.assign({}, item);
+        this.dialogEstado = true;
       },
 
       close () {
-        this.dialog = false
+        this.dialog = false;
         this.$nextTick(() => {
+          this.usuarioEditado = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+       },
+
+      closeEnable () {
+          this.dialogActivo = false
+          this.$nextTick(() => {
           this.usuarioEditado = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
       },
 
-      closeEnable (isUpdate, value) {
-        if(!isUpdate) {
-          this.usuarios[this.editedIndex] = value
-        }
-        this.dialogEstado = false
-        this.$nextTick(() => {
-          this.usuarioEditado = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-    
-      update() {
-          this.usuarioEditado.password = this.usuarioEditado.passwordGuardado;
-          this.usuarioEditado.passwordGuardado = '';
-          this.axios.put(`usuario/update/${this.usuarios[this.editedIndex]._id}`,this.usuarioEditado)
-            .then((res) => {
-              // this.usuarios[this.editedIndex]._id = res.data._id;
-              this.usuarioEditado.nombre = res.data.nombre;
-              this.usuarioEditado.correo = res.data.correo;
-              this.usuarioEditado.password = res.data.password;
-              this.usuarioEditado.activo = res.data.activo;
-            })
-            .catch((e)=>{
-              console.log('error ' + e)
-            })  
-          Object.assign(this.usuarios[this.editedIndex], this.usuarioEditado)
+      validateUsuario() {
+
+        let valido = false;
+
+        valido = (this.usuarioEditado.nombre.length > 0 && this.usuarioEditado.nombre.length <=100);
+        valido = valido && ((this.usuarioEditado.password.length > 0 && this.usuarioEditado.password.length <=100));
+        valido = valido && ((this.usuarioEditado.correo.length > 0 && this.usuarioEditado.correo.length <=100));
+        
+        //Si no es valido se tiene que mostrar mensaje
+        this.mostrarMensaje = !valido;
+
+        return valido;
+
       },
 
       save () {
-        //Es la actualizacion del registro
-        if (this.editedIndex > -1) {
-          this.update()
-        } else {
-        //Es un nuevo registro
-          this.axios.post('usuario/add',this.usuarioEditado)
+
+        if(this.validateUsuario()) {
+
+          //Es la actualizacion del registro
+          if (this.editedIndex > -1) {
+            this.axios.put('usuario/update/', {
+              _id: this.usuarioEditado._id,
+              nombre: this.usuarioEditado.nombre,
+              correo: this.usuarioEditado.correo,
+              activo: this.usuarioEditado.activo
+            })
             .then((res) => {
-              this.usuarios.push(res.data)
+              this.initialize();
             })
             .catch((e)=>{
               console.log('error ' + e)
-            }) 
-        }
-        this.close()
+            })            
+          } else {
+          //Es un nuevo registro
+            this.axios.post('usuario/add', {
+                  nombre: this.usuarioEditado.nombre,
+                  correo: this.usuarioEditado.correo,
+                  password: this.usuarioEditado.password,
+                  activo: this.usuarioEditado.activo
+                })
+              .then((res) => {
+                this.usuarios.push(res.data)
+              })
+              .catch((e)=>{
+                console.log('error ' + e)
+            })
+          }
+          this.close()
+        } 
       },
     },
   };

@@ -6,23 +6,31 @@ module.exports = {
     add: async(req, res, next) => {
         try {
 
-            //Hacer las validaciones para adicionar un nuevo usuario
+            let checkCorreo = await models.Usuario.findOne( {correo: req.body.correo } )
 
-            req.body.password = await bcrypt.hash(req.body.password, 10);
-            const reg = await models.Usuario.create(req.body);
-            res.status(200).json(reg);
+            if(! checkCorreo ) {
+                req.body.password = await bcrypt.hash(req.body.password, 10);
+                const reg = await models.Usuario.create(req.body);
+                res.status(200).json(reg);    
+            } else {
+                res.status(404).send ({
+                    message : 'El usuario ya existe'
+                })
+            }
+
         } catch (e) {
             res.status(500).send({
-                message: 'Ocurrió un error'
+                message: 'Ocurrió un error ' + e
             });
             next(e);
         }
     },
     login: async(req, res, next) => {
         try {
-            console.log(req.body.correo)
-            let usuario = await models.usuario.findOne({where: { correo: req.body.correo } });
-            if(usuario) {
+
+            let valor = req.query.valor;
+            const reg = await models.Usuario.findOne( { correo: valor } );
+            if(reg) {
                 let match = await bcrypt.compare(req.body.password, usuario, password);
                 if(match) {
                     console.log(usuario.rol);
@@ -54,41 +62,55 @@ module.exports = {
             next(e);
         }
     },
-    update: async(req, res, next) => {            
-        const id = req.params.id;
-        const body = req.body;
+    update: async(req, res, next) => { 
+        
+        try {
+            let valor = req.query.valor;
+            let id = req.body._id;
+            let checkCorreo = await models.Usuario.findOne( { correo: valor } )
+            if(!checkCorreo) {
+                const reg = await models.Usuario.findByIdAndUpdate( {_id: id },
+                                                                    { nombre: req.body.nombre } );
+                res.status(200).json(reg);
+            } else {
+                res.status(500).send({
+                    mensaje: 'El correo no existe ' + e
+                });
+            }
+
+        } catch (e) {
+            res.status(500).send({
+                message: 'Ocurrió un error ' + e
+            });
+            next(e);
+        }
+    },
+    activate: async(req, res, next) => {
 
         try {
 
-            const reg = await models.Usuario.findByIdAndUpdate(id,
-                body,
-                {new:true});
+            const reg = await models.Usuario.findByIdAndUpdate( {_id: req.body._id },
+                                                                { activo: true } );
             res.status(200).json(reg);
+
+
         } catch (e) {
             res.status(500).send({
                 message: 'Ocurrió un error' + e
             });
             next(e);
         }
-    },
-    activate: async(req, res, next) => {
-        try {
-            const reg = await models.Usuario.update({ activo: 1 }, { where: { id: req.body.id } });
-            res.status(200).json(reg);
-        } catch (e) {
-            res.status(500).send({
-                message: 'Ocurrió un error'
-            });
-            next(e);
-        }
+
     },
     deactivate: async(req, res, next) => {
         try {
-            const reg = await models.Usuario.update({ activo: 0 }, { where: { id: req.body.id } });
+            const reg = await models.Usuario.findByIdAndUpdate( {_id: req.body._id },
+                                                                { activo: false } );
             res.status(200).json(reg);
+
         } catch (e) {
             res.status(500).send({
-                message: 'Ocurrió un error'
+                message: 'Ocurrió un error' + e
             });
             next(e);
         }

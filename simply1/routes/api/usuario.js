@@ -8,7 +8,7 @@ const usuarioController = require('../../controllers/UsuarioController');
 router.post('/add', usuarioController.add);
 // router.get('/add', auth.VerificarAdministrador, UsuarioController.add);
 router.get('/list', usuarioController.list);
-router.put('/update/:id', usuarioController.update);
+router.put('/update/', usuarioController.update);
 router.put('/activate', usuarioController.activate);
 router.put('/deactivate', usuarioController.deactivate);
 

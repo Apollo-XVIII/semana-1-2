@@ -72,7 +72,7 @@ export default {
         .then((response) => {
           this.nombre = response.data.nombre;
           this.ingredientes = response.data.ingredientes;
-          this.imagen = response.data.imagen;
+          this.imagen = "../img/" + response.data.imagen;
           this.preparacion = response.data.preparacion;
         })
         .catch((e)=>{

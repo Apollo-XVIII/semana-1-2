@@ -100,7 +100,7 @@ export default {
 
     llamarUsuarios() {
       this.$router
-        .push({ path: "/usuarios" })
+        .push({ path: "/Usuarios" })
         .catch(() => {});
     },
   },

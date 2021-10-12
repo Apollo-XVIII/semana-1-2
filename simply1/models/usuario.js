@@ -5,7 +5,7 @@ const usuarioSchema = new Schema({
     
     nombre: {
         type: String,
-        length: 50,
+        length: 100,
         required: [true, 'Nombre obligatorio']
     }, 
     correo: {
@@ -14,7 +14,7 @@ const usuarioSchema = new Schema({
     },
     password: {
         type: String,
-        length: 50,
+        length: 10,
         required: [true, 'Contraseña obligatoria']
     },
     activo: {
