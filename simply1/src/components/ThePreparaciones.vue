@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <template slot="progress">
       <v-progress-linear
         color="yellow lighten-2"
@@ -32,7 +32,7 @@
             {{ titulo_boton }}
           </v-btn>
         </v-card-actions>
-  </div>
+  </v-container>
 </template>
 
 <script>

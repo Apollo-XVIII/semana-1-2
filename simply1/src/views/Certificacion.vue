@@ -40,7 +40,7 @@
           href="https://drive.google.com/file/d/17pN-NItba2YKNPZOgNrp0-Hp5Jss1NfA/view?usp=sharing"
           download
         >
-          <v-btn elevation="4" rounded @click="IrVariedad">
+          <v-btn elevation="4" rounded @click="IrListado()">
             LISTADO MARCAS CERTIFICADAS
           </v-btn>
         </a>
@@ -48,3 +48,23 @@
     </v-layout>
   </v-container>
 </template>
+
+
+<script>
+
+export default {
+  
+  name: "Tipos",
+
+  data() {
+    return {
+    }
+  },
+
+  methods: {
+    IrListado() {
+      return    
+    }
+  }
+}
+</script>

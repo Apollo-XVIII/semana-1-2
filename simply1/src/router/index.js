@@ -5,7 +5,15 @@ import Recetas from '../views/Recetas.vue'
 import Receta from '../views/Receta.vue'
 import Preparaciones from '../views/Preparaciones.vue'
 import Preparacion from '../views/Preparacion.vue'
-import Usuarios from '../views/Usuarios.vue'
+import Administracion from '../views/Administracion.vue'
+import Variedad from '../views/Variedad.vue'
+import Mundo from '../views/Mundo.vue'
+import Certificacion from '../views/Certificacion.vue'
+import Colombia from '../views/Colombia.vue'
+import Detalledo from '../views/Detalledo.vue'
+import DO from '../views/DO.vue'
+import Nosotros from '../views/Nosotros.vue'
+
 
 Vue.use(VueRouter)
 
@@ -77,19 +85,58 @@ const routes = [
     component: () => import(/* webpackChunkName: "variedad" */ '../views/Variedad.vue')
   },
   {
+    path: '/do',
+    name: 'DO',
+    
+    component: () => import(/* webpackChunkName: "colombia" */ '../views/DO.vue')
+  },
+  {
+    path: '/taza',
+    name: 'Taza',
+    
+    component: () => import(/* webpackChunkName: "colombia" */ '../views/Taza.vue')
+  },
+  {
+    path: '/certificacion',
+    name: 'Certificacion',
+    
+    component: () => import(/* webpackChunkName: "colombia" */ '../views/Certificacion.vue')
+  },
+  {
     path: '/colombia',
     name: 'Colombia',
     
     component: () => import(/* webpackChunkName: "colombia" */ '../views/Colombia.vue')
   },
   {
-    path: '/usuarios/',
-    name: 'Usuarios',
+    path: '/detalledo',
+    name: 'Detalledo',
     
-    component: () => import(/* webpackChunkName: "usuario" */ '../views/Usuarios.vue')
-  }
-
-
+    component: () => import(/* webpackChunkName: "colombia" */ '../views/Detalledo.vue')
+  },
+  {
+    path: '/administracion/',
+    name: 'Administracion',
+    
+    component: () => import(/* webpackChunkName: "administracion" */ '../views/Administracion.vue'),
+    children: [
+      {
+        path: 'usuarios',
+        name: 'Usuarios',
+        component: () => import(/* webpackChunkName: "usuarios" */ '../components/GestionUsuarios.vue'),
+      },
+      {
+        path: 'gestionrecetas',
+        name: 'GestionRecetas',
+        component: () => import(/* webpackChunkName: "usuarios" */ '../components/GestionRecetas.vue'),
+      },
+      {
+        path: 'gestionpreparaciones',
+        name: 'GestionPreparaciones',
+        component: () => import(/* webpackChunkName: "usuarios" */ '../components/GestionPreparaciones.vue'),
+      },
+    ]
+  },
 ]
 
 const router = new VueRouter({

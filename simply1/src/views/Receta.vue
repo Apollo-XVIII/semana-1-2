@@ -55,7 +55,11 @@ export default {
       titulo_ingredientes: "Ingredientes: ",
       titulo_preparacion: "Preparación: ",
       id: this.$route.params.id,
-      receta: {},
+      receta: {
+        ingredientes: '',
+        preparacion: '',
+        nombre: '',
+      },
       imagen: '',
     }
   },
@@ -68,8 +72,10 @@ export default {
     initialize () {
       this.axios.get(`receta/listOne/${this.id}`)
         .then((response) => {
-          this.receta = response.data
-          this.imagen = '../img/' + this.receta.imagen
+          this.receta.nombre = response.data.nombre;
+          this.receta.preparacion = response.data.preparacion;
+          this.receta.ingredientes = response.data.ingredientes;
+          this.imagen = '../img/' + response.data.imagen;
         })
         .catch((e)=>{
           console.log('error ' + e)
