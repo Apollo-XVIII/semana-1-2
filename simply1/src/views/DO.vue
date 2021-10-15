@@ -32,12 +32,34 @@
         linajes de café de la variedad arábiga del producto, la cuales son las
         siguientes:
       </p>
-       <a href="/detdo">
-       <v-btn elevation="4" rounded @click="IrVariedad">
+
+       <v-btn elevation="4" rounded @click="IrCertificaciones('Detalledo')">
                 CERTIFICACIONES DO
         </v-btn>
-        </a>
+
     </v-flex>
   </v-layout>
 </v-container>
 </template>
+
+
+<script>
+
+export default {
+  
+  name: "Tipos",
+
+  data() {
+    return {
+    }
+  },
+
+  methods: {
+    IrCertificaciones(item) {
+          this.$router.push({ 
+          name: item
+        })      
+    }
+  }
+}
+</script>

@@ -21,11 +21,11 @@
             <v-tab @click="llamarTipos()">Tipos de Café</v-tab>
             <v-tab @click="llamarRecetas()">Recetas</v-tab>
             <v-tab @click="llamarPreparaciones()">Preparaciones</v-tab>
-            <v-tab @click="llamarNoticias()">Noticias</v-tab>
+            <!-- <v-tab @click="llamarNoticias()">Noticias</v-tab> -->
             <v-tab @click="llamarNosotros()">Nosotros</v-tab>
             <v-tab @click="llamarHistoria()">Historia del Café</v-tab>
-            <v-tab @click="llamarLogin()">Login</v-tab>
-            <v-tab @click="llamarUsuarios()">Usuarios</v-tab>
+            <!-- <v-tab @click="llamarLogin()">Login</v-tab> -->
+            <v-tab @click="llamarAdministracion()">Administracion</v-tab>
           </v-tabs>
           <!-- <a
             v-for="(next, i) in whatsNext"
@@ -98,9 +98,9 @@ export default {
         .catch(() => {});
     },
 
-    llamarUsuarios() {
+    llamarAdministracion() {
       this.$router
-        .push({ path: "/Usuarios" })
+        .push({ path: "/Administracion" })
         .catch(() => {});
     },
   },

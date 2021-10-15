@@ -1,17 +1,20 @@
 <template>
+<v-container>
+
   <v-row dense align="center" justify="center">
-    <v-col class="d-flex justify-space-around">
-      <span class="text-h5 font-weight-bold brown--text darken-2--text">
+    <v-col class="d-flex justify-space-around" >
+      <span class="text-h5 font-weight-bold brown--text darken-2--text" >
         {{ titulo_seccion }}</span
       >
     </v-col>
-    <v-col v-for="(item, index) of recetas" :key="index">
-      <v-card class="mx-auto my-12" max-width="374">
+    <v-col v-for="(item, index) of recetas" :key="index" cols="3">
+      <v-card class="mx-auto my-12" max-width="350" max-height="500">
         <the-recetas :receta="item"></the-recetas>
 
       </v-card>
     </v-col>
   </v-row>
+</v-container>
 </template>
 
 <script>
