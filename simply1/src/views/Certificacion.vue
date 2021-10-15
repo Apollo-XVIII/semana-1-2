@@ -36,14 +36,15 @@
           (actualmente Estados Unidos y Canadá) y se encuentran principalmente
           asociados a las calidades mínimas de exportación vigentes en Colombia.
         </p>
-        <a
-          href="https://drive.google.com/file/d/17pN-NItba2YKNPZOgNrp0-Hp5Jss1NfA/view?usp=sharing"
+        <router-link
+          to="https://drive.google.com/file/d/17pN-NItba2YKNPZOgNrp0-Hp5Jss1NfA/view?usp=sharing"
           download
+          target="_blank"
         >
           <v-btn elevation="4" rounded @click="IrListado()">
             LISTADO MARCAS CERTIFICADAS
           </v-btn>
-        </a>
+        </router-link>
       </v-flex>
     </v-layout>
   </v-container>
